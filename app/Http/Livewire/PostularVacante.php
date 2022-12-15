@@ -30,6 +30,13 @@ class PostularVacante extends Component
     {
         $datos = $this->validate();
 
+
+        if($this->vacante->candidatos()->where('user_id', auth()->user()->id)->count() > 0) {
+
+            session()->flash('error', 'Ya postulaste a esta vacante anteriormente');
+
+        } else {
+
        // Almacenar CV en el disco duro
        $cv = $this->cv->store('public/cv');      
        $datos['cv'] = str_replace('public/cv/', '', $cv);
@@ -48,6 +55,7 @@ class PostularVacante extends Component
            session()->flash('mensaje', 'Se envió correctamente tu información, mucha suerte');
 
            return redirect()->back();
+       }
 
     }
 
